@@ -11,17 +11,17 @@ import java.util.List;
 
 @RestController
 @RequestMapping("characters")
-public class DisneyController {
+public class CharacterController {
 
     private final CharacterService characterService;
 
     @Autowired
-    public DisneyController(CharacterService characterService) {
+    public CharacterController(CharacterService characterService) {
         this.characterService = characterService;
     }
 
     @GetMapping()
-    public List<Character> findAll(){
-        return characterService.findAll();
+    public List<Character> listarPersonajes(){
+        List<Character> personajes = characterService.findAll();
     }
 }
