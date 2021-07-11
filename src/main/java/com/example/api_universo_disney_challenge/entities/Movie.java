@@ -1,5 +1,7 @@
 package com.example.api_universo_disney_challenge.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -10,9 +12,10 @@ public class Movie {
     private Integer idmovie;
     private String image;
     private String title;
-    private Integer yearOfRelease;
+    private Integer yearofrelease;
     private Integer score;
 
+    @JsonBackReference
     @ManyToMany(mappedBy = "movies", fetch = FetchType.LAZY)
     private List<Character> characters;
 
@@ -22,20 +25,20 @@ public class Movie {
     public Movie() {
     }
 
-    public Movie(String image, String title, Integer yearOfRelease, Integer score, List<Character> characters, List<Genre> genres) {
+    public Movie(String image, String title, Integer yearofrelease, Integer score, List<Character> characters, List<Genre> genres) {
         this.image = image;
         this.title = title;
-        this.yearOfRelease = yearOfRelease;
+        this.yearofrelease = yearofrelease;
         this.score = score;
         this.characters = characters;
         this.genres = genres;
     }
 
-    public Movie(Integer idmovie, String image, String title, Integer yearOfRelease, Integer score, List<Character> characters, List<Genre> genres) {
+    public Movie(Integer idmovie, String image, String title, Integer yearofrelease, Integer score, List<Character> characters, List<Genre> genres) {
         this.idmovie = idmovie;
         this.image = image;
         this.title = title;
-        this.yearOfRelease = yearOfRelease;
+        this.yearofrelease = yearofrelease;
         this.score = score;
         this.characters = characters;
         this.genres = genres;
@@ -58,12 +61,12 @@ public class Movie {
         this.title = title;
     }
 
-    public Integer getYearOfRelease() {
-        return yearOfRelease;
+    public Integer getYearofrelease() {
+        return yearofrelease;
     }
 
-    public void setYearOfRelease(Integer yearOfRelease) {
-        this.yearOfRelease = yearOfRelease;
+    public void setYearofrelease(Integer yearOfRelease) {
+        this.yearofrelease = yearOfRelease;
     }
 
     public Integer getScore() {
@@ -104,7 +107,7 @@ public class Movie {
                 "idmovie=" + idmovie +
                 ", image='" + image + '\'' +
                 ", title='" + title + '\'' +
-                ", yearOfRelease=" + yearOfRelease +
+                ", yearOfRelease=" + yearofrelease +
                 ", score=" + score +
                 ", characters=" + characters +
                 ", genres=" + genres +

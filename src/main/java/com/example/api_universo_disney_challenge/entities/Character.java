@@ -1,5 +1,8 @@
 package com.example.api_universo_disney_challenge.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -14,6 +17,7 @@ public class Character {
     private Double weight;
     private String story;
 
+    @JsonManagedReference //no agrega objetos child personaje
     @ManyToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name="characters_x_movies",
         joinColumns = @JoinColumn(name="idcharacter"),
@@ -22,6 +26,14 @@ public class Character {
     private List<Movie> movies;
 
     public Character() {
+    }
+
+    public Character(String image, String name, Integer age, Double weight, String story) {
+        this.image = image;
+        this.name = name;
+        this.age = age;
+        this.weight = weight;
+        this.story = story;
     }
 
     public Character(String image, String name, Integer age, Double weight, String story, List<Movie>movies) {

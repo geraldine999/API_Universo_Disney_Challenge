@@ -5,7 +5,10 @@ import com.example.api_universo_disney_challenge.repositories.CharacterRepositor
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class CharacterService {
@@ -17,7 +20,41 @@ public class CharacterService {
         this.characterRepository = characterRepository;
     }
 
-    public List<Character> findAll() {
+    public Map<String, String> findAll() {
+        List<Character> personajes = characterRepository.findAll();
+        Map<String, String> nombresEImagenes = new HashMap<>();
+            for (Character p: personajes) {
+                nombresEImagenes.put(p.getName(), p.getImage());
+            }
+            return nombresEImagenes;
+
+            }
+
+
+
+    public void save(Character personaje) {
+         characterRepository.save(personaje);
+    }
+
+    public void deleteById(Integer id) {
+        characterRepository.deleteById(id);
+    }
+
+
+
+    public Character findById(Integer id) {
+        return characterRepository.findById(id).orElse(null);
+    }
+
+    public Optional<Character> getCharacterByName(String name) {
+        return characterRepository.getCharacterByName(name);
+    }
+
+    public Optional<List<Character>> getCharactersByWeight(Double weight) {
+        return characterRepository.getCharactersByWeight(weight);
+    }
+
+    public List<Character> getAll() {
         return characterRepository.findAll();
     }
 }
