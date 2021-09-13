@@ -123,4 +123,8 @@ public class Character {
                 ", movies='" + movies + '\'' +
                 '}';
     }
+
+    public boolean estoyBienFormado() {
+        return (name!=null && age!=null && image!=null && story!=null && weight!=null);
+    }
 }

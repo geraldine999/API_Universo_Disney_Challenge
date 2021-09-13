@@ -4,6 +4,7 @@ import com.example.api_universo_disney_challenge.entities.Character;
 import com.example.api_universo_disney_challenge.entities.Movie;
 import com.example.api_universo_disney_challenge.services.CharacterService;
 import com.example.api_universo_disney_challenge.services.MovieService;
+import com.example.api_universo_disney_challenge.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,21 +18,42 @@ public class CharacterController {
 
     private final CharacterService characterService;
     private final MovieService movieService;
+    private final UserService userService;
 
     @Autowired
-    public CharacterController(CharacterService characterService, MovieService movieService) {
+    public CharacterController(CharacterService characterService, MovieService movieService, UserService userService) {
         this.characterService = characterService;
         this.movieService = movieService;
+        this.userService = userService;
     }
 
-    @GetMapping()
-    public Map<String, String> listarPersonajesNombreEImagen(){
-        return characterService.findAll();
-    }//TODO esto deberia retornar una lista de maps
 
-    @GetMapping("prueba")//TODO borrar este metodo??
-    public List<Character> listarPersonajes(){
-        return characterService.getAll();
+    private boolean validarYRegistrarApiCall(Optional<String> email, Optional<String> token){
+        if(token.isPresent() && email.isPresent()){
+            return userService.validateTemporalTokenAndCountApiCall(email.get(), token.get());
+
+        }
+        return false;
+    }
+
+    //hacer esto en todos los endpoints y en cada controlador PERO NO PORQUE SE USA SPRING SECURITY
+    @GetMapping("images") //@RequestParam -> url?token={token}&email={email}
+    public List<Map<String, String>> listarPersonajesNombreEImagen(@RequestParam Optional<String> email,
+                                                                   @RequestParam Optional <String> token){
+        return validarYRegistrarApiCall(email, token)? characterService.listarPersonajes():null;
+    }
+
+
+
+    @GetMapping("/all")
+    public List<Character> listarTodosLosPersonajes(@RequestParam Optional<String> email,
+                                                    @RequestParam Optional <String> token){
+        return validarYRegistrarApiCall(email, token)? characterService.getAll():null;
+    }
+
+    @GetMapping("/{id}")
+    private Character getCharacterById(@PathVariable Integer id){
+        return characterService.getCharacterById(id);
     }
 
 
@@ -56,7 +78,13 @@ public class CharacterController {
         guardarPersonaje(personaje);
     }
 
-    //TODO busqueda por nombre, peso, edad, idMovie
+
+   @GetMapping()
+   private List<Character> buscar(@RequestParam Optional<String> name,
+                                  @RequestParam Optional<Integer> age,
+                                  @RequestParam Optional<Integer> movies){
+        return characterService.findCharacters(name, age, movies);
+   }
 
     @GetMapping("nombre/{name}")
     public Optional<Character> buscarPorNombre(@PathVariable String name){

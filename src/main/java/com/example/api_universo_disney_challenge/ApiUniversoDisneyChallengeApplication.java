@@ -10,4 +10,5 @@ public class ApiUniversoDisneyChallengeApplication {
         SpringApplication.run(ApiUniversoDisneyChallengeApplication.class, args);
     }
 
+    //TODO agregar application properties y BD
 }
